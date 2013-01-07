@@ -376,12 +376,47 @@
     \begin{block}{Problema energético}
         \begin{itemize}
             \item El consumo energético se ha convertido en un factor clave en el diseño de las microarquitecturas.
+            \begin{itemize}
+                \item Establecer el impacto en el consumo eléctrico a consecuencia del aumento del número de cores.
+            \end{itemize}
             \item La ley de Amdahl no contempla la energía requerida por los procesadores.
             \begin{itemize}
-                \item Necesario extender la ley de amdahl para tener en cuenta dicho factor.
+                \item Necesario extender la Ley de Amdahl para tener en cuenta dicho factor.
             \end{itemize}
         \end{itemize}
     \end{block}
+\end{frame}
+
+\subsection*{Estructura de los multicores en estudio}
+\begin{frame}{Estructura de los multicores en estudio}
+    \begin{block}{Diseños de multicores}
+        Se parte de los siguientes diseños de multicores:
+        \\
+        \center\includegraphics[width=.8\linewidth]{figures/amd_power_structures}
+        
+        \begin{itemize}
+            \item a. Multicore actual. 
+            \item b. Multicore basado en cores sencillos.
+            \item c. Multicore asimétrico.
+        \end{itemize}
+    \end{block}    
+    
+\end{frame}
+
+\begin{frame}{Ley de Amdahl y consumo eléctrico}
+    \begin{block}{a. Ley de Amdahl en multicore actual}
+        $$ Speedup_{a} = \frac{1 + (n - 1)k(1-f)}{(1 - f)\frac{f}{n}} $$
+        \begin{itemize}
+             \item $ k $ es un valor en el intervalo $ [0,1] $ que indica la fracción de energía que el procesador consume en \textit{idle}.
+             \item La energía consumida en la fase secuencial por el core ocupado es 1.
+                \begin{itemize}
+                    \item Los $ n -1 $ cores restantes consumirán $ (n -1)k $.
+                    \item La fase secuencial consume $ 1 +  (n -1)k $.
+                \end{itemize}
+        \end{itemize}
+        
+    \end{block}    
+    
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
