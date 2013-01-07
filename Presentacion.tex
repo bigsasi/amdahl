@@ -252,22 +252,39 @@
     \end{block}
 \end{frame}
 
-\subsection*{Benchmarks de alto rendimiento}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Mejorar el rendimiento}
+\section{Extensiones a la ley de Amdahl}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{¿Cómo mejorar el rendimiento?}
+\subsection*{Ley de Gustafson}
 
+\begin{frame}{\emph{Fixed-size}}
+    \begin{block}{}
+    \begin{itemize}
+        \item Según la ley de Amdahl multicore, el procesamiento en paralelo no es escalable debido a la fracción secuencial.
+        \item Si una aplicación es paralelizable al 90\%, con 8-16 procesaodres, el 10\% secuencial contribuirá al 50-80\% del tiempo.
+        \item Por ello, la ley de Amdahl se considera un modelo de speedup a tamaño fijo (\emph{fixed-size})
+        \item Otro concepto: modelo de speedup a tiempo fijo (\emph{fixed time}): \textbf{Ley de Gustafson}.
+    \end{itemize}
+    \end{block}
+\end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Alto rendimiento en el CESGA}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection*{FinisTerrae}
+\begin{frame}{Ley de Gustafson}
+    \begin{block}{Argumentación}
+        \begin{itemize}
+            \item Máquinas más potentes están diseñadas para problemas grandes.
+            \item El problema también debe escalar en proporción.
+        \end{itemize}
+    \end{block}
+    \begin{block}{Ley de Gustafson}
+        \begin{itemize}
+            \item \emph{Fixed-Time Speedup}
+            $$ Speedup_{FT} = (1 - f) + mf $$
+            \item Siendo $f$ la fracción paralela y $m$ el número de cores.
+            \item No contradice la ley de Amdahl: es una observación de que los supuestos de Amdahl no coinciden con la forma en la que se usan los multicore
+        \end{itemize}
+    \end{block}
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
