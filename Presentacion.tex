@@ -396,28 +396,123 @@
         
         \begin{itemize}
             \item a. Multicore actual. 
-            \item b. Multicore basado en cores sencillos.
+            \item b. Multicore basado en cores sencillos eficientes.
             \item c. Multicore asimétrico.
         \end{itemize}
     \end{block}    
     
 \end{frame}
 
-\begin{frame}{Ley de Amdahl y consumo eléctrico}
-    \begin{block}{a. Ley de Amdahl en multicore actual}
-        $$ Speedup_{a} = \frac{1 + (n - 1)k(1-f)}{(1 - f)\frac{f}{n}} $$
+\begin{frame}{Consumo eléctrico y rendimiento en multicore actual}
+    \begin{block}{Consumo eléctrico en multicore actual}
+        $$ W = \frac{1 + (n - 1)k(1-f)}{(1 - f)\frac{f}{n}} $$
         \begin{itemize}
-             \item $ k $ es un valor en el intervalo $ [0,1] $ que indica la fracción de energía que el procesador consume en \textit{idle}.
-             \item La energía consumida en la fase secuencial por el core ocupado es 1.
+             \item $ W $ representa el consumo de energía.
+             \item $ k $, perteneciente al intervalo $ [0,1] $, fracción de energía que el procesador consume en \textit{idle}.
+             \item La energía consumida en secuencial por el core es 1.
                 \begin{itemize}
-                    \item Los $ n -1 $ cores restantes consumirán $ (n -1)k $.
-                    \item La fase secuencial consume $ 1 +  (n -1)k $.
+                    \item Los $ n -1 $ cores restantes consumirán $ (n -1)k $. La fase secuencial consume $ 1 +  (n -1)k $.
                 \end{itemize}
         \end{itemize}
-        
+          
+    
+    \end{block}
+    
+    
+\end{frame}
+
+
+\begin{frame}{Consumo eléctrico y rendimiento en multicore actual}
+    \begin{block}{Rendimiento por consumo eléctrico en multicore actual}
+    Partiendo de la versión simplificada de Amdahl para multicores ($ A = \frac{1}{1 - F_{mejora} + \frac{F_{mejora}}{n}} $) se obtiene el cociente:
+    
+        $$ \frac{Perf}{W} = \frac{1}{1 + (n - 1)k(1-f)} $$
+    \\
+    Gráficamente:    
+    \\
+    \center\includegraphics[width=.3\linewidth]{figures/am_powperf_a}
+    
     \end{block}    
     
 \end{frame}
+
+
+
+\begin{frame}{Consumo eléctrico y rendimiento en multicore con cores sencillos eficientes}
+    \begin{block}{Consumo eléctrico en multicore con cores sencillos eficientes}
+        $$ W = \frac{w_{c}+ (n - 1)w_{c}k_{c}(1-f)}{(1 - f)\frac{f}{n}} $$
+        \begin{itemize}
+             \item $ W $ representa el consumo de energía.
+             \item $ w_{c} $, en el intervalo $ [0,1] $, representa el consumo relativo de un core sencillo activo frente a un procesador completo.
+             \item Análogamente, $ k_{c} $, en el intervalo $ [0,1] $, representa el consumo normalizado de un core sencillo en \textit{idle} frente a un procesador completo.
+             \item La energía consumida en secuencial por el core sencillo es $ w_{c} $.
+                \begin{itemize}
+                    \item Los $ n -1 $ cores restantes consumirán $ (n -1)w_{c}k_{c} $. La fase secuencial consume $ n w_{c} $.
+                \end{itemize}
+        \end{itemize}
+          
+    
+    \end{block}
+    
+    
+\end{frame}
+
+
+\begin{frame}{Consumo eléctrico y rendimiento en multicore con cores sencillos}
+    \begin{block}{Rendimiento por consumo eléctrico en multicore con cores sencillos}
+    Partiendo de la versión simplificada de Amdahl para multicores ($ A = \frac{s_{c}}{1 - F_{mejora} + \frac{F_{mejora}}{n}} $) se obtiene el cociente:
+    
+        $$ \frac{Perf}{W} = \frac{s_{c}}{w_{c} + (n - 1)w_{c}k_{c}(1-f)} $$
+    donde $ s_{c} $ (en $ [0,1] $) representa el rendimiento de un core sencillo normalizado al rendimiento de un procesador completo. Gráficamente:    
+    \center\includegraphics[width=.25\linewidth]{figures/am_powperf_b}
+    
+    \end{block}    
+    
+\end{frame}
+
+
+\begin{frame}{Consumo eléctrico y rendimiento en multicore asimétrico}
+    \begin{block}{Consumo eléctrico en multicore asimétrico}
+        $$ W = \frac{(1 -f)(1+(n-1)w_{c}k_{c}) + \frac{f}{s_{c}} (\frac{k}{n-1} + w_{c})}{(1 - f)\frac{f}{(n-1)s_{c}}} $$
+        \begin{itemize}
+             \item $ k $, en $ [0,1] $, fracción de energía que el core completo consume en la fase paralela.
+
+        \end{itemize}
+          
+    
+    \end{block}
+    
+    
+\end{frame}
+
+
+\begin{frame}{Consumo eléctrico y rendimiento en multicore asimétrico}
+    \begin{block}{Rendimiento por consumo eléctrico en multicore asimétrico}
+    Partiendo de la versión simplificada de Amdahl para multicores ($ A = \frac{1}{1 - F_{mejora} + \frac{F_{mejora}}{n}} $) se obtiene el cociente:
+    
+        $$ \frac{Perf}{W} = \frac{1}{(1-f)(1+(n-1)w_{c}k_{c}) + \frac{f}{s_{c}} (\frac{k}{n-1} + w_{c})} $$
+    \\
+    Gráficamente:    
+    \\
+    \center\includegraphics[width=.3\linewidth]{figures/am_powperf_c}
+    
+    \end{block}    
+    
+\end{frame}
+
+
+\begin{frame}{Comparativa rendimiento por consumo}
+    \begin{block}{Comparativa rendimiento por consumo}
+\center
+    \includegraphics[width=.3\linewidth]{figures/am_powperf_a}
+    \includegraphics[width=.3\linewidth]{figures/am_powperf_b}
+    \includegraphics[width=.3\linewidth]{figures/am_powperf_c}
+    \end{block}    
+    
+\end{frame}
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Bibliografía}
