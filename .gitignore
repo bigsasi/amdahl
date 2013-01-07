@@ -1,0 +1,10 @@
+#	.gitignore
+Presentacion.aux
+Presentacion.bbl
+Presentacion.blg
+Presentacion.log
+Presentacion.nav
+Presentacion.out
+Presentacion.pdf
+Presentacion.snm
+Presentacion.toc
