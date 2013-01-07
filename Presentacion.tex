@@ -163,7 +163,7 @@
     \end{block}
     \begin{block}{Problemas de la extensión de Amdahl}
         \begin{itemize}
-            \item Demasiado generalizada.
+            \item Demasiado simplificada.
             \item ¿Todos los multicores son iguales?
         \end{itemize}
     \end{block}
@@ -256,9 +256,8 @@
 \section{Extensiones a la ley de Amdahl}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{Ley de Gustafson}
 
-\begin{frame}{\emph{Fixed-size}}
+\begin{frame}{Ley de Amdahl}
     \begin{block}{}
     \begin{itemize}
         \item Según la ley de Amdahl multicore, el procesamiento en paralelo no es escalable debido a la fracción secuencial.
@@ -269,7 +268,9 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Ley de Gustafson}
+\subsection*{Ley de Gustafson}
+
+\begin{frame}[allowframebreaks]{Ley de Gustafson}
     \begin{block}{Argumentación}
         \begin{itemize}
             \item Máquinas más potentes están diseñadas para problemas grandes.
@@ -284,8 +285,86 @@
             \item No contradice la ley de Amdahl: es una observación de que los supuestos de Amdahl no coinciden con la forma en la que se usan los multicore
         \end{itemize}
     \end{block}
+    \begin{block}{Escalabilidad del speedup}
+        Speedup con ley de Amdahl vs Speedup con ley de Gustafson
+    \end{block}
+    \begin{center}
+        \includegraphics[width=.4\linewidth]{figures/fixedsize_speedup}
+        \includegraphics[width=.4\linewidth]{figures/fixedtime_speedup}
+    \end{center}
 \end{frame}
 
+\begin{frame}[allowframebreaks]{Speedup ligado a memoria}
+    \begin{block}{Limitación por memoria}
+        \begin{itemize}
+        \item Las leyes de Amdahl y Gustafson son simplistas: no tienen en cuenta limitaciones físicas.
+        \item En la práctica, el componente físico que más afecta la computación es la memoria.
+        $$ Speedup_{MemoryBounded} = \frac{(1-f) + f \bar{g}(m)}{(1-f) + \frac{f\bar{g}(m)}{m}} $$
+        \end{itemize}
+    \end{block}
+    \begin{block}{$\bar{g}(m)$}
+        \begin{itemize}
+            \item $\bar{g}(m)$ es una función específica para cada algoritmo que depende de la relación entre el número de operaciones de computación y de las operacioens en memoria.
+            \item Generalización de las leyes anteriores:
+            \begin{itemize}
+                \item Ley de Amdahl: $\bar{g}(m) = 1$
+                \item Ley de Gustafson: $\bar{g}(m) = m$
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+    \begin{block}{Algoritmo ejemplo: multiplicación de matrices}
+        \begin{itemize}
+            \item Operaciones de cómputo: $2N^3$
+            \item Operaciones en memoria: $3N^2$
+            \item Se obtiene una $\bar{g}(x) = x^\frac{3}{2}$
+            $$ Speedup_{MB} = \frac{(1-f) + f \bar{g}(m)}{(1-f) + \frac{f\bar{g}(m)}{m}} = \frac{(1-f) + f m^\frac{3}{2}}{(1-f) + fm^\frac{1}{2}} $$
+        \end{itemize}
+    \end{block}
+    \begin{block}{Speedup alcanzado}
+        \begin{itemize}
+            \item Como en el ejemplo, si $\bar{g}(m) > m$ el speedup ligado a memoria es mayor que el correspondiente al de la ley de Gustafson.
+                \begin{itemize}
+                    \item Algoritmos con accesos a memoria optimizados y buen aprovechamiento de las cachés.
+                \end{itemize}
+        \end{itemize}
+    \end{block}
+    \begin{block}{Resultados}
+        Speedup ligado a memoria y comparativa con el resto de leyes
+    \end{block}
+    \begin{center}
+        \includegraphics[width=.4\linewidth]{figures/mb_speedup}
+        \includegraphics[width=.4\linewidth]{figures/all_speedups}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Limitaciones de la memoria}
+    \begin{block}{Conclusión}
+        En el área de la computación escalable, el procesamiento secuencial no es el factor limitante.
+        \begin{itemize}
+        \item Sin embargo, existen problemas para alcanzar los speedups teóricos en los multicore
+        \end{itemize}
+    \end{block}
+    \begin{columns}
+        \begin{column}{.6\linewidth}
+            \begin{block}{Factor limitante}
+                \small
+                Problema de la memoria (\emph{memory-wall problem})
+                \begin{itemize}
+                    \item Latencia de acceso a memoria principal
+                    \item Contención de recursos en cachés compartidas
+                \end{itemize}
+                Disparidad entre CPU y memoria que se ha incrementado a lo largo de los años
+            \end{block}
+        \end{column}
+        \begin{column}{.3\linewidth}
+            \begin{center}
+            \includegraphics[width=.8\linewidth]{figures/multicore_mem}
+            \end{center}
+        \end{column}
+    \end{columns}
+
+ 
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Bibliografía}
