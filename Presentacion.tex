@@ -289,10 +289,12 @@
         Speedup con ley de Amdahl vs Speedup con ley de Gustafson
     \end{block}
     \begin{center}
-        \includegraphics[width=.4\linewidth]{figures/fixedsize_speedup}
-        \includegraphics[width=.4\linewidth]{figures/fixedtime_speedup}
+        \includegraphics[width=.5\linewidth]{figures/fixedsize_speedup}
+        \includegraphics[width=.5\linewidth]{figures/fixedtime_speedup}
     \end{center}
 \end{frame}
+
+\subsection*{Speedup ligado a memoria}
 
 \begin{frame}[allowframebreaks]{Speedup ligado a memoria}
     \begin{block}{Limitación por memoria}
@@ -332,8 +334,8 @@
         Speedup ligado a memoria y comparativa con el resto de leyes
     \end{block}
     \begin{center}
-        \includegraphics[width=.4\linewidth]{figures/mb_speedup}
-        \includegraphics[width=.4\linewidth]{figures/all_speedups}
+        \includegraphics[width=.5\linewidth]{figures/mb_speedup}
+        \includegraphics[width=.5\linewidth]{figures/all_speedups}
     \end{center}
 \end{frame}
 
@@ -361,9 +363,25 @@
             \includegraphics[width=.8\linewidth]{figures/multicore_mem}
             \end{center}
         \end{column}
-    \end{columns}
+    \end{columns} 
+\end{frame}
 
- 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ley de Amdahl y eficiencia energética}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Ley de Amdahl y eficiencia energética}
+
+\begin{frame}{Ley de Amdahl y eficiencia energética}
+    \begin{block}{Problema energético}
+        \begin{itemize}
+            \item El consumo energético se ha convertido en un factor clave en el diseño de las microarquitecturas.
+            \item La ley de Amdahl no contempla la energía requerida por los procesadores.
+            \begin{itemize}
+                \item Necesario extender la ley de amdahl para tener en cuenta dicho factor.
+            \end{itemize}
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
