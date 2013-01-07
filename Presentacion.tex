@@ -261,9 +261,9 @@
     \begin{block}{}
     \begin{itemize}
         \item Según la ley de Amdahl multicore, el procesamiento en paralelo no es escalable debido a la fracción secuencial.
-        \item Si una aplicación es paralelizable al 90\%, con 8-16 procesaodres, el 10\% secuencial contribuirá al 50-80\% del tiempo.
+        \item Si una aplicación es paralelizable al 90\%, con 8-16 procesadores, el 10\% secuencial contribuirá al 50-80\% del tiempo.
         \item Por ello, la ley de Amdahl se considera un modelo de speedup a tamaño fijo (\emph{fixed-size})
-        \item Otro concepto: modelo de speedup a tiempo fijo (\emph{fixed time}): \textbf{Ley de Gustafson}.
+        \item Otro concepto: modelo de speedup a tiempo fijo (\emph{fixed-time}): \textbf{Ley de Gustafson}.
     \end{itemize}
     \end{block}
 \end{frame}
@@ -307,7 +307,7 @@
     \begin{block}{$\bar{g}(m)$}
         \begin{itemize}
 	    \item $m$ = número de cores
-            \item $\bar{g}(m)$ es una función específica para cada algoritmo que depende de la relación entre el número de operaciones de computación y de las operacioens en memoria.
+            \item $\bar{g}(m)$ es una función específica para cada algoritmo que depende de la relación entre el número de operaciones de computación y de las operaciones en memoria.
             \item Generalización de las leyes anteriores:
             \begin{itemize}
                 \item Ley de Amdahl: $\bar{g}(m) = 1$
@@ -325,7 +325,7 @@
     \end{block}
     \begin{block}{Speedup alcanzado}
         \begin{itemize}
-            \item Como en el ejemplo, si $\bar{g}(m) > m$ el speedup ligado a memoria es mayor que el correspondiente al de la ley de Gustafson.
+            \item Como en el ejemplo, si $\bar{g}(m) > m$, el speedup ligado a memoria es mayor que el correspondiente al de la ley de Gustafson.
                 \begin{itemize}
                     \item Algoritmos con accesos a memoria optimizados y buen aprovechamiento de las cachés.
                 \end{itemize}
@@ -361,7 +361,7 @@
         \end{column}
         \begin{column}{.3\linewidth}
             \begin{center}
-            \includegraphics[width=.8\linewidth]{figures/multicore_mem}
+            \includegraphics[width=1.1\linewidth]{figures/multicore_mem}
             \end{center}
         \end{column}
     \end{columns} 
