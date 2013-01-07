@@ -1,0 +1,283 @@
+\documentclass[utf8]{beamer}
+
+\usepackage{pgfpages}
+\usepackage{beamerthemesplit}
+\usepackage{latexsym}
+\usepackage{eurosym}
+\usepackage[english]{babel}
+\usepackage{ae,aecompl}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{verbatim}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{amsmath}
+
+%\setbeameroption{show notes on second screen}
+%\setbeameroption{show only notes}
+
+%Configuracion paquete listings
+\definecolor{gris}{rgb}{0.9,1.0,1.0}
+\definecolor{gris2}{rgb}{0.9,0.9,0.9}
+\definecolor{gray90}{gray}{.90}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+\lstset{ %
+    %frame=Lpb,                        % adds a frame around the code
+    framerule=0pt,
+    aboveskip=0.5cm,
+    framextopmargin=3pt,
+    framexbottommargin=3pt,
+    framexleftmargin=0.4cm,
+    framesep=0pt,
+    rulesep=.4pt,
+    % backgroundcolor=\color{gray97},
+    rulesepcolor=\color{black},
+    texcl=true,
+    %
+    stringstyle=\ttfamily,
+    showspaces=false,               % show spaces adding particular underscores
+    showstringspaces=false,         % underline spaces within strings
+    showtabs=false,                 % show tabs within strings adding particular underscores
+    tabsize=2,                      % sets default tabsize to 2 spaces
+    captionpos=b,                   % sets the caption-position to bottom
+    basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+    commentstyle=\color{gray45},
+    keywordstyle=\bfseries,
+    breakatwhitespace=false,        % sets if automatic breaks should only happen at whitespace
+    %
+    %numbers=left,
+    %numbersep=5pt,                  % how far the line-numbers are from the code
+    %numberstyle=\tiny,              % the size of the fonts that are used for the line-numbers
+    %numberfirstline = false,
+    breaklines=true,
+}
+
+%% Define a new 'leo' style for the package that will use a smaller font.
+\makeatletter
+\def\url@leostyle{%
+  \@ifundefined{selectfont}{\def\UrlFont{\sf}}{\def\UrlFont{\sf}}}
+\makeatother
+%% Now actually use the newly defined style.
+\urlstyle{leo}
+
+
+\usetheme{CambridgeUS}
+\usecolortheme{dolphin}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.666666\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}
+  }
+  \vskip0pt%
+}
+\setbeamercolor{titlelike}{parent=structure,bg=gray90}
+\setbeamercolor{block body}{bg=gray90}
+\setbeamercolor{block title}{bg=gray75}
+
+\title{Ley de Amdahl para multicore}
+\subtitle{MICAP ATC 2012-2013}
+\author[]{Daniel Ampuero Anca \\ Dainel Fernández Nuñez \\ Isaac Fernández Varela \\ Juan Font Alonso}
+
+\date[7 de enero de 2012] % (optional, should be abbreviation of conference name)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\renewcommand{\figurename}{Figura} 
+
+
+\begin{frame}
+    \maketitle
+\end{frame}
+
+\section*{Indice}
+\subsection*{Indice}
+\begin{frame}
+    \tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Ley de Amdahl}
+%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Ley de Amdahl}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[allowframebreaks]{Ley de Amdahl}
+    \begin{block}{Gene Amdahl, 1967}
+        La mejora obtenida en el rendimiento de un sistema debido a la alteración de uno de sus componentes está limitada por la fracción de tiempo que se utiliza dicho componente
+    \end{block}
+    \begin{block}{Ecuación}
+        $$ T_{mejora} = T_{orginal} * (1 - F_{mejora} + \frac{F_{mejora}}{A_{mejora}}) $$
+        \begin{itemize}
+            \item $T_{mejora}$: tiempo total tras mejorar una parte del programa.
+            \item $T_{original}$: tiempo antes de la mejora.
+            \item $F_{mejora}$: fracción del total de la parte que se mejora.
+            \item $A_{mejora}$: aceleración que se consigue en la parte mejorada.
+        \end{itemize}
+    \end{block}
+    \begin{block}{Cálculo de la aceleración}
+        $$ A = \frac{T_{original}}{T_{mejora}} = \frac{1}{1-F{mejora}+\frac{F_{mejora}}{A_{mejora}}} $$
+        \begin{itemize}
+        \item Si $A_{mejora} \rightarrow \infty$ entonces $A = \frac{1}{1 - F_{mejora}}$ \\
+        \item La aceleración siempre está limitada por la fracción de programa que se puede mejorar.
+        \end{itemize}
+    \end{block}
+    \begin{block}{Ejemplos}
+        \begin{itemize}
+        \item ¿Cuál es la aceleración total de un programa si una porción de código del 75 \% va 2 veces más rápido?
+        $$ A = \frac{1}{1-F{mejora}+\frac{F_{mejora}}{A_{mejora}}} = \frac{1}{1 - 0.75 + \frac{0.75}{2}} = \frac{1}{0.625} = 1.6 $$
+        \item ¿Cuál es la máxima aceleración posible si se muede mejorar el 90 \% del código?
+        $$ A = \frac{1}{1 - F_{mejora}} = \frac{1}{1 - 0.9} = 10 $$
+        \end{itemize}
+    \end{block}
+    \begin{block}{Representación gráfica}
+        \begin{figure}[htp]
+            \begin{center}
+            \includegraphics[width=.7\linewidth]{amdahl}
+            \caption{Explicación gŕafica de la Ley de Amdahl}
+            \label{fig:amdahl}
+            \end{center}
+        \end{figure}
+    \end{block}
+    \begin{block}{Extensión de Amdahl para multicore}
+        \begin{itemize}
+            \item Suponiendo $n$ cores
+            \item Suponiendo una fracción de código paralelizable $F_{paralelizable}$
+            \item Descartando penalizaciones de la paralelización
+            $$ A = \frac{1}{1 - F_{mejora} + \frac{F_{mejora}}{n}} $$
+        \end{itemize}
+    \end{block}
+    \begin{block}{Problemas de la extensión de Amdahl}
+        \begin{itemize}
+            \item Demasiado generalizada.
+            \item ¿Todos los multicores son iguales?
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Ley de Amdahl en multicore}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Estructura de los multicore}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[allowframebreaks]{Definición de un chip multicore}
+    \begin{block}{\emph{Baseline Core Equivalent}}
+        \begin{itemize}
+        \item Podemos suponer una unidad lógica teórica para definir los cores.
+        \item Unídad mínima funcional con rendimiento $perf(BCE) = 1$
+        \item Los cores de un chip se forman agrupando $r$ BCE con rendimiento $perf(r)$
+        \item Un chip está formado por $n$ BCE agrupados en cores.
+        \end{itemize}
+    \end{block}
+    \begin{block}{Rendimiento de un core}
+        \begin{itemize}
+            \item Se define la función $perf(r)$ para el rendimiento de un core de $r$ BCE.
+            \item $perf(r) = r^y, 0 < y < 1$
+            \item Normalmente se utiliza $y = \frac{1}{2}, perf(r) = \sqrt{r}$
+        \end{itemize}
+    \end{block}
+    \begin{block}{Configuración de un multicore}
+        \begin{itemize}
+        \item Según como se agrupen los $n$ BCE de un chip podemos definir los tipos de multicore:
+            \begin{itemize}
+                \item \textbf{Simétrico:} $n$ BCE en grupos de $r$ para formar $\frac{n}{r}$ cores.
+                \item \textbf{Asimétrico:} un core de $r$ BCE y $n - r$ cores con un único BCE.
+                \item \textbf{Dinámico:} un core con varios BCE, pudiendo cambiar el número de BCE dinámicamente. El resto de BCE no se agrupan formando cada uno un core.
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsection*{Ley de Amdahl en multicores}
+
+\begin{frame}{Amdahl en multicores simétricos}
+    \begin{block}{Ley de Amdahl}
+        \begin{itemize}
+        \item Teniendo un procesador con $n$ cores con $r$ BCE por core.
+        $$ Speedup_{symmetric} = \frac{1}{\frac{1 - f}{perf(r)} + \frac{f  r}{perf(r)  n}} $$
+        \item La parte secuencial $(1 - f)$ se ve influenciada por el rendimiento de un core $perf(r)$
+        \item La parte paralela $(f)$ varía con el rendimiento de todos los cores, $\frac{n}{r}perf(r)$
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Amdahl en multicores asimétricos}
+    \begin{block}{Ley de Amdahl}
+        \begin{itemize} 
+            \item Un core con rendimiento $perf(r)$ y $n - r$ cores con rendimiento 1.
+            $$ Speedup_{assymetric} = \frac{1}{\frac{1 - f}{perf(r)} + \frac{f}{perf(r) + n - r}} $$
+            \item La parte secuencial de nuevo viene marcada por un único core con rendmiento $perf(r)$
+            \item La parte paralela mejorará con la suma de rendimiento de todos los cores, $perf(r) + perf(BCE) (n - r) = perf(r) + n - r$
+        \end{itemize}
+    \end{block}
+    \begin{block}{Ventajas}
+        \begin{itemize}
+            \item El rendimiento puede ser mayor que el de las configuraciones simétricas, nunca inferior.
+            \item Se beneficia de acelerar la parte secuencial al mismo tiempo que la paralela.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Amdahl en multicores dinámicos}
+    \begin{block}{Ley de Amdahl}
+        \begin{itemize}
+            \item $n$ cores con la posibilidad de que uno reclame $r$ BCE en algún momento.
+            $$ Speedup_{dynamic} = \frac{1}{\frac{1 - f}{perf(r)} + \frac{f}{n}} $$
+            \item En la parte secuencial se reclamarán $r$ BCE ejecutándose con un rendimiento $perf(r)$
+            \item En la parte paralela se utilzárán los $n$ cores de un BCE con un rendimiento $n\,perf(BCE) = n$
+        \end{itemize}
+    \end{block}
+    \begin{block}{Ventajas e inconvenientes}
+        \begin{itemize}
+            \item El rendimiento puede ser mayor que el de las configuraciones asimétricas, nunca inferior.
+            \item Cambiar dinámicamente el número de cores le permite optimizar la aceleración tanto en secuencial como en paralelo. 
+            \item No es fácil implementarlos a nivel hardware.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\subsection*{Benchmarks de alto rendimiento}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Mejorar el rendimiento}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{¿Cómo mejorar el rendimiento?}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Alto rendimiento en el CESGA}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{FinisTerrae}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Bibliografía}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[allowframebreaks]{Bibliografía}
+    \nocite{*}
+    \bibliographystyle{pfc-fic}
+    \bibliography{biblio}
+\end{frame}
+
+\end{document}
