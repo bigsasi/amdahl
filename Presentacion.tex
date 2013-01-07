@@ -87,7 +87,7 @@
 
 \title{Ley de Amdahl para multicore}
 \subtitle{MICAP ATC 2012-2013}
-\author[]{Daniel Ampuero Anca \\ Daniel Fernández Nuñez \\ Isaac Fernández Varela \\ Juan Font Alonso}
+\author[]{Daniel Ampuero Anca \\ Daniel Fernández Núñez \\ Isaac Fernández Varela \\ Juan Font Alonso}
 
 \date[7 de enero de 2012] % (optional, should be abbreviation of conference name)
 
@@ -138,9 +138,9 @@
     \end{block}
     \begin{block}{Ejemplos}
         \begin{itemize}
-        \item ¿Cuál es la aceleración total de un programa si una porción de código del 75 \% va 2 veces más rápido?
+        \item ¿Cuál es la aceleración total de un programa si una porción de código del $75\%$ va 2 veces más rápido?
         $$ A = \frac{1}{1-F{mejora}+\frac{F_{mejora}}{A_{mejora}}} = \frac{1}{1 - 0.75 + \frac{0.75}{2}} = \frac{1}{0.625} = 1.6 $$
-        \item ¿Cuál es la máxima aceleración posible si se puede mejorar el 90 \% del código?
+        \item ¿Cuál es la máxima aceleración posible si se puede mejorar el $90\%$ del código?
         $$ A = \frac{1}{1 - F_{mejora}} = \frac{1}{1 - 0.9} = 10 $$
         \end{itemize}
     \end{block}
@@ -155,9 +155,9 @@
     \end{block}
     \begin{block}{Extensión de Amdahl para multicore}
         \begin{itemize}
-            \item Suponiendo $n$ cores
-            \item Suponiendo una fracción de código paralelizable $F_{paralelizable}$
-            \item Descartando penalizaciones de la paralelización
+            \item Suponiendo $n$ cores.
+            \item Suponiendo una fracción de código paralelizable $F_{paralelizable}$.
+            \item Descartando penalizaciones de la paralelización.
             $$ A = \frac{1}{1 - F_{mejora} + \frac{F_{mejora}}{n}} $$
         \end{itemize}
     \end{block}
