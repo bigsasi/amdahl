@@ -116,7 +116,7 @@
 \subsection*{Ley de Amdahl}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}[allowframebreaks]{Ley de Amdahl}
+\begin{frame}[allowframebreaks]{Enunciado}
     \begin{block}{Gene Amdahl, 1967}
         La mejora obtenida en el rendimiento de un sistema debido a la alteración de uno de sus componentes está limitada por la fracción de tiempo que se utiliza dicho componente
     \end{block}
@@ -136,7 +136,10 @@
         \item La aceleración siempre está limitada por la fracción de programa que se puede mejorar.
         \end{itemize}
     \end{block}
-    \begin{block}{Ejemplos}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Ejemplos}
+    \begin{block}{Cálculo de la aceleración}
         \begin{itemize}
         \item ¿Cuál es la aceleración total de un programa si una porción de código del $75\%$ va 2 veces más rápido?
         $$ A = \frac{1}{1-F{mejora}+\frac{F_{mejora}}{A_{mejora}}} = \frac{1}{1 - 0.75 + \frac{0.75}{2}} = \frac{1}{0.625} = 1.6 $$
@@ -147,25 +150,11 @@
     \begin{block}{Representación gráfica}
         \begin{figure}[htp]
             \begin{center}
-            \includegraphics[width=.7\linewidth]{amdahl}
+            \includegraphics[width=.7\linewidth]{figures/amdahl}
             \caption{Explicación gŕafica de la Ley de Amdahl}
             \label{fig:amdahl}
             \end{center}
         \end{figure}
-    \end{block}
-    \begin{block}{Extensión de Amdahl para multicore}
-        \begin{itemize}
-            \item Suponiendo $n$ cores.
-            \item Suponiendo una fracción de código paralelizable $F_{paralelizable}$.
-            \item Descartando penalizaciones de la paralelización.
-            $$ A = \frac{1}{1 - F_{mejora} + \frac{F_{mejora}}{n}} $$
-        \end{itemize}
-    \end{block}
-    \begin{block}{Problemas de la extensión de Amdahl}
-        \begin{itemize}
-            \item Demasiado simplificada.
-            \item ¿Todos los multicores son iguales?
-        \end{itemize}
     \end{block}
 \end{frame}
 
@@ -173,8 +162,28 @@
 \section{Ley de Amdahl en multicore}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\subsection*{Propuesta de Amdahl para multicore}
+
+\begin{frame}{Propuesta de Amdahl para multicore}
+    \begin{block}{Enunciado}
+        \begin{itemize}
+            \item Suponiendo $n$ cores.
+            \item Suponiendo una fracción de código paralelizable $F_{paralelizable}$.
+            \item Descartando penalizaciones de la paralelización.
+            $$ A = \frac{1}{1 - F_{paralelizable} + \frac{F_{paralelizable}}{n}} $$ 
+        \end{itemize}
+    \end{block}
+    \begin{block}{Problemas de la extensión de Amdahl}
+        \begin{itemize}
+            \item Demasiado simplificada. ¿Todos los multicores son iguales?
+            \item ¿Todos los cores tienen el mismo rendimiento?
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+
 \subsection*{Estructura de los multicore}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}[allowframebreaks]{Definición de un chip multicore}
     \begin{block}{\emph{Baseline Core Equivalent}}
@@ -197,14 +206,25 @@
         \item Según como se agrupen los $n$ BCE de un chip podemos definir los tipos de multicore:
             \begin{itemize}
                 \item \textbf{Simétrico:} $n$ BCE en grupos de $r$ para formar $\frac{n}{r}$ cores.
-                \item \textbf{Asimétrico:} un core de $r$ BCE y $n - r$ cores con un único BCE.
-                \item \textbf{Dinámico:} un core con varios BCE, pudiendo cambiar el número de BCE dinámicamente. El resto de BCE no se agrupan formando cada uno un core.
+                \item \textbf{Asimétrico:} un core (P) de $r$ BCE y $n - r$ cores con un único BCE.
+                \item \textbf{Dinámico:} un core (P) con varios BCE, pudiendo cambiar el número de BCE dinámicamente. El resto de BCE no se agrupan formando cada uno un core.
             \end{itemize}
+        \end{itemize}
+    \end{block}
+    \begin{block}{Configuración de un multicore}
+        \begin{center}
+            \includegraphics[width=\linewidth]{figures/clasificacion_multicore}
+        \end{center}
+        \begin{itemize}
+            \item a. Multicore simétrico con $n=16$, $r=1$ y 16 cores.
+            \item b. Multicore simétrico con $n=16$, $r=4$ y 4 cores.
+            \item c. Multicore asimétrico con $n=16$, $r=4$ y 13 cores.
         \end{itemize}
     \end{block}
 \end{frame}
 
 \subsection*{Ley de Amdahl en multicores}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Amdahl en multicores simétricos}
     \begin{block}{Ley de Amdahl}
@@ -222,14 +242,14 @@
         \begin{itemize} 
             \item Un core con rendimiento $perf(r)$ y $n - r$ cores con rendimiento 1.
             $$ Speedup_{assymetric} = \frac{1}{\frac{1 - f}{perf(r)} + \frac{f}{perf(r) + n - r}} $$
-            \item La parte secuencial de nuevo viene marcada por un único core con rendmiento $perf(r)$
+            \item La parte secuencial de nuevo viene marcada por el core P con rendimiento $perf(r)$
             \item La parte paralela mejorará con la suma de rendimiento de todos los cores, $perf(r) + perf(BCE) (n - r) = perf(r) + n - r$
         \end{itemize}
     \end{block}
     \begin{block}{Ventajas}
         \begin{itemize}
-            \item El rendimiento puede ser mayor que el de las configuraciones simétricas, nunca inferior.
-            \item Se beneficia de acelerar la parte secuencial al mismo tiempo que la paralela.
+            \item El procesador P puede tener gran rendimiento sin sacrificar el número total de procesadores.
+            \item Como consecuencia, el speedup, para el mismo número de BCE es igual o superior al de un procesador simétrico.
         \end{itemize}
     \end{block}
 \end{frame}
@@ -239,8 +259,8 @@
         \begin{itemize}
             \item $n$ cores con la posibilidad de que uno reclame $r$ BCE en algún momento.
             $$ Speedup_{dynamic} = \frac{1}{\frac{1 - f}{perf(r)} + \frac{f}{n}} $$
-            \item En la parte secuencial se reclamarán $r$ BCE ejecutándose con un rendimiento $perf(r)$
-            \item En la parte paralela se utilzárán los $n$ cores de un BCE con un rendimiento $n\,perf(BCE) = n$
+            \item En la parte secuencial el procesador P reclamará $r$ BCE ejecutándose con un rendimiento $perf(r)$
+            \item En la parte paralela se utilzárán los $n$ BCE con un rendimiento $n\,perf(BCE) = n$
         \end{itemize}
     \end{block}
     \begin{block}{Ventajas e inconvenientes}
@@ -257,7 +277,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\begin{frame}{Ley de Amdahl}
+
+\begin{frame}{Modelo de la ley de Amdahl}
     \begin{block}{}
     \begin{itemize}
         \item Según la ley de Amdahl multicore, el procesamiento en paralelo no es escalable debido a la fracción secuencial.
@@ -393,15 +414,13 @@
     \begin{block}{Diseños de multicores}
         Se parte de los siguientes diseños de multicores:
         \\
-        \center\includegraphics[width=.8\linewidth]{figures/amd_power_structures}
-        
+        \center\includegraphics[width=.8\linewidth]{figures/amd_power_structures}  
         \begin{itemize}
             \item a. Multicore tradicional. 
             \item b. Multicore basado en cores sencillos eficientes.
             \item c. Multicore asimétrico.
         \end{itemize}
     \end{block}    
-    
 \end{frame}
 
 \begin{frame}{Consumo eléctrico y rendimiento en multicore tradicional}
@@ -415,29 +434,20 @@
                     \item Los $ n -1 $ cores restantes consumirán $ (n -1)k $. La fase secuencial consume $ 1 +  (n -1)k $.
                 \end{itemize}
         \end{itemize}
-          
-    
-    \end{block}
-    
-    
+    \end{block}  
 \end{frame}
-
 
 \begin{frame}{Consumo eléctrico y rendimiento en multicore tradicional}
+    \small
     \begin{block}{Rendimiento por consumo eléctrico en multicore tradicional}
-    Partiendo de la versión simplificada de Amdahl para multicores ($ A = \frac{1}{1 - F_{mejora} + \frac{F_{mejora}}{n}} $) se obtiene el cociente:
-    
+        Partiendo de la versión simplificada de Amdahl para multicores ($ A = \frac{1}{1 - f + \frac{f}{n}} $) se obtiene el cociente:
         $$ \frac{Perf}{W} = \frac{1}{1 + (n - 1)k(1-f)} $$
-    \\
-    Gráficamente:    
-    \\
-    \center\includegraphics[width=.3\linewidth]{figures/am_powperf_a}
-    
-    \end{block}    
-    
+        Gráficamente:
+     \end{block} 
+    \begin{center}
+        \includegraphics[width=.3\linewidth]{figures/am_powperf_a}      
+    \end{center}
 \end{frame}
-
-
 
 \begin{frame}{Consumo eléctrico y rendimiento en multicore con cores sencillos eficientes}
     \begin{block}{Consumo eléctrico en multicore con cores sencillos eficientes}
@@ -451,24 +461,20 @@
                     \item Los $ n -1 $ cores restantes consumirán $ (n -1)w_{c}k_{c} $. La fase secuencial consume $ n w_{c} $.
                 \end{itemize}
         \end{itemize}
-          
-    
-    \end{block}
-    
-    
+    \end{block}  
 \end{frame}
 
-
 \begin{frame}{Consumo eléctrico y rendimiento en multicore con cores sencillos}
+    \small
     \begin{block}{Rendimiento por consumo eléctrico en multicore con cores sencillos}
-    Partiendo de la versión simplificada de Amdahl para multicores ($ A = \frac{s_{c}}{1 - F_{mejora} + \frac{F_{mejora}}{n}} $) se obtiene el cociente:
-    
-        $$ \frac{Perf}{W} = \frac{s_{c}}{w_{c} + (n - 1)w_{c}k_{c}(1-f)} $$
-    donde $ s_{c} $ (en $ [0,1] $) representa el rendimiento de un core sencillo normalizado al rendimiento de un procesador completo. Gráficamente:    
-    \center\includegraphics[width=.25\linewidth]{figures/am_powperf_b}
-    
+        Partiendo de la versión simplificada de Amdahl para multicores ($ A = \frac{1}{1 - f + \frac{f}{n}} $) se obtiene el cociente:
+            $$ \frac{Perf}{W} = \frac{s_{c}}{w_{c} + (n - 1)w_{c}k_{c}(1-f)} $$
+        donde $ s_{c} $ (en $ [0,1] $) representa el rendimiento de un core sencillo normalizado al rendimiento de un procesador completo. 
+        Gráficamente:    
     \end{block}    
-    
+    \begin{center}
+        \includegraphics[width=.25\linewidth]{figures/am_powperf_b}    
+    \end{center}
 \end{frame}
 
 
@@ -482,26 +488,21 @@
                 \item Durante la fase paralela el core tradicional consume $ k $ y los cores eficientes $ (n-1)w_{c} $.
              \end{itemize}
         \end{itemize}
-          
-    
     \end{block}
-    
-    
 \end{frame}
 
 
 \begin{frame}{Consumo eléctrico y rendimiento en multicore asimétrico}
+    \small
     \begin{block}{Rendimiento por consumo eléctrico en multicore asimétrico}
-    Partiendo de la versión simplificada de Amdahl para multicores ($ A = \frac{1}{1 - F_{mejora} + \frac{F_{mejora}}{n}} $) se obtiene el cociente:
-    
-        $$ \frac{Perf}{W} = \frac{1}{(1-f)(1+(n-1)w_{c}k_{c}) + \frac{f}{s_{c}} (\frac{k}{n-1} + w_{c})} $$
-    \\
-    Gráficamente:    
-    \\
-    \center\includegraphics[width=.3\linewidth]{figures/am_powperf_c}
-    
+        Partiendo de la versión simplificada de Amdahl para multicores ($ A = \frac{1}{1 - f + \frac{f}{n}} $) se obtiene el cociente:
+            $$ \frac{Perf}{W} = \frac{1}{(1-f)(1+(n-1)w_{c}k_{c}) + \frac{f}{s_{c}} (\frac{k}{n-1} + w_{c})} $$
+        \\
+        Gráficamente:      
     \end{block}    
-    
+    \begin{center}
+        \includegraphics[width=.3\linewidth]{figures/am_powperf_c} 
+    \end{center}
 \end{frame}
 
 
